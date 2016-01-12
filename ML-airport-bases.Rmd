@@ -1,0 +1,29 @@
+---
+title: 'United Airlines: can R figure out where an airplane lives'
+author: "SN"
+date: "January 12, 2016"
+output: html_document
+---
+
+##Prelude
+
+I'm a fan airtravel and airliners and airlines, an aviation geek put simply. I enjoy thinking about how the hippos of this industry (United, American, Delta, Southwest) manage their armies of ground staff, flight crews, and, most interestingly, airplanes. When things are stable, this operational dance is nothing short of astonishing; when the situation goes south, when most are cursing at the often innocent, powerless desk agents, it is fascinating to study how airlines manage to recover back to normal operation.
+
+I digress. In my mind a significant portion of this complex operation is optimizing the location of core markets (hubs or focus cities) against the operational demands of the fleet: it'd be nice if the airport most of your passengers fly to/from also happens to be where airplanes get checked, serviced, and repaired. It would also probably make sense to dedicate any given operational base and maintenance facility to an aircraft type or family. Again, these aren't facts I'm listing here; I'm simply listing a few assumptions or conclusions I've come to after the aforementioned thinking.
+
+So, can R help me figure out where any given airplane type's "home" is in the US? Meaning, can we separate a typical airport from an operational/maintenance base?
+
+I might even be able to make a decent guess as to what airports fall into this category. I might even be able to speculate where United's Boeing 747s have their crashpads, but I'd like to see if I can answer this question via some basic machine learning techniques.
+
+##Data
+
+We will use my beloved dataset provided by the [Bureau of Transportation Statistics](http://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236&DB_Short_Name=On-Time). It is intended to provide indicators for on-time performance across major airlines in the United States, but what it effectively offers is a detailed monthly snapshot of these airlines' operations, down to the level of individual airplanes.
+
+For this exercise we will focus on United Airlines, for several reasons. I happen to be a committed United flier, one with a decent frequent flier status may I point out, so this is just sentimentally interesting. United also operates a fabulous bouquet of airplanes from both the Boeing and the Airbus families. Lastly, it's a massive operation, which should give us plenty of data to train on.
+
+##Housekeeping
+
+We shall start by aseembling our dataset - gluing together monthly extracts of the BTS data. By the way, I'll be looking at about four years worth of data, total extracts weighting around 5GB.
+
+```{r}
+library(dplyr)
